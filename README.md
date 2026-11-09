@@ -1,4 +1,4 @@
-# Dependency Rerouter
+# G2727 Dependency Rerouter
 
 A Unity editor tool for VRChat creators and anyone else. Pick a prefab, an avatar in the scene, or any asset. It lists every file that asset depends on as a folder tree, lets you choose what you want, and moves or copies those files into a folder of your choice.
 
@@ -9,13 +9,13 @@ A Unity editor tool for VRChat creators and anyone else. Pick a prefab, an avata
    ```
    https://garret27.github.io/g2727-vpm/index.json
    ```
-2. In your project, open **Manage Project** and add **Dependency Rerouter**.
+2. In your project, open **Manage Project** and add **G2727 Dependency Rerouter**.
 
 ### Manual
 Download the `.zip` from [Releases](https://github.com/Garret27/DependencyRerouter/releases) and extract it into your project's `Packages/` folder.
 
 ## Usage
-Open the tool from **Tools → Dependency Rerouter**. You can also right-click an asset or a Hierarchy object and choose **Reroute Dependencies…**.
+Open the tool from **Tools → Garret2727 → G2727 Dependency Rerouter**. You can also right-click an asset or a Hierarchy object and choose **Reroute Dependencies…**.
 
 1. **Source.** Drop in a prefab, scene object or asset and press **Scan**.
 2. **Pick files.**

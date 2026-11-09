@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+- Renamed to **G2727 Dependency Rerouter** to match the other G2727 tools.
+- Menu moved to **Tools → Garret2727 → G2727 Dependency Rerouter**.
+
 ## 1.0.0
 - First release.
 - Scan a prefab, scene avatar or any asset for its dependencies (optionally nested).

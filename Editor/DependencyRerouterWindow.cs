@@ -58,7 +58,7 @@ namespace DependencyRerouterTool
         bool planDirty = true;
         int firstRow, lastRow = 40;
 
-        [MenuItem("Tools/Dependency Rerouter")]
+        [MenuItem("Tools/Garret2727/G2727 Dependency Rerouter")]
         public static void Open() => OpenWith(Selection.activeObject);
 
         [MenuItem("Assets/Reroute Dependencies...", false, 2000)]
@@ -69,7 +69,7 @@ namespace DependencyRerouterTool
 
         static void OpenWith(Object obj)
         {
-            var w = GetWindow<DependencyRerouterWindow>("Dependency Rerouter");
+            var w = GetWindow<DependencyRerouterWindow>("G2727 Dependency Rerouter");
             w.minSize = new Vector2(620, 480);
             if (obj != null && !AssetDatabase.IsValidFolder(AssetDatabase.GetAssetPath(obj)))
             {
@@ -561,7 +561,7 @@ namespace DependencyRerouterTool
                     {
                         string rel = ToProjectPath(abs);
                         if (rel != null) destination = rel;
-                        else EditorUtility.DisplayDialog("Dependency Rerouter", "Destination must be inside this project's Assets folder.", "OK");
+                        else EditorUtility.DisplayDialog("G2727 Dependency Rerouter", "Destination must be inside this project's Assets folder.", "OK");
                     }
                 }
                 if (GUILayout.Button(new GUIContent("Selected", "Use the folder selected in the Project window"), GUILayout.Width(70)))
@@ -663,7 +663,7 @@ namespace DependencyRerouterTool
                          (mode == TransferMode.Move
                              ? "Original files will be relocated. This cannot be undone with Ctrl+Z - back up your project first if unsure."
                              : "Originals stay where they are. New copies will be created and rewired.");
-            if (!EditorUtility.DisplayDialog("Dependency Rerouter", msg, verb, "Cancel")) return;
+            if (!EditorUtility.DisplayDialog("G2727 Dependency Rerouter", msg, verb, "Cancel")) return;
 
             var sceneSource = SourceIsSceneObject && !(SourceIsPrefabInstance && usePrefabAsset) ? source as GameObject : null;
             var res = DependencyRerouter.Execute(plan, mode);
@@ -672,7 +672,7 @@ namespace DependencyRerouterTool
             if (mode == TransferMode.Copy && sceneSource != null && duplicateSceneObject && res.guidMap.Count > 0)
                 clone = DependencyRerouter.DuplicateAndRewire(sceneSource, res);
 
-            Debug.Log($"[Dependency Rerouter] {verb}: {res.done} done, {res.skipped} skipped, {res.failed} failed.\n" +
+            Debug.Log($"[G2727 Dependency Rerouter] {verb}: {res.done} done, {res.skipped} skipped, {res.failed} failed.\n" +
                       string.Join("\n", res.log));
 
             // After a copy, focus the copied source (prefab) or the duplicated scene object.
@@ -686,7 +686,7 @@ namespace DependencyRerouterTool
                 }
             }
 
-            EditorUtility.DisplayDialog("Dependency Rerouter",
+            EditorUtility.DisplayDialog("G2727 Dependency Rerouter",
                 $"{verb} finished.\n\nDone: {res.done}\nSkipped: {res.skipped}\nFailed: {res.failed}\n\nFull log in the Console.", "OK");
 
             Scan();

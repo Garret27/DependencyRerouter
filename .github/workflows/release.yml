@@ -38,6 +38,6 @@ jobs:
           zip -r -X "$ZIP" . -x '.git/*' '.github/*' '.gitignore' '.gitattributes' '*.zip'
           NOTES=$(awk -v v="## $VERSION" '$0==v{f=1;next} /^## /{f=0} f' CHANGELOG.md)
           gh release create "$VERSION" "$ZIP" package.json \
-            --title "Dependency Rerouter $VERSION" \
+            --title "G2727 Dependency Rerouter $VERSION" \
             --notes "${NOTES:-Release $VERSION}"
           echo "::notice::Released $VERSION. Run 'Build Repo Listing' in Garret27/g2727-vpm to publish it to VCC."

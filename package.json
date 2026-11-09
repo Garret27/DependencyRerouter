@@ -1,7 +1,7 @@
 {
   "name": "io.github.garret27.dependency-rerouter",
-  "displayName": "Dependency Rerouter",
-  "version": "1.0.0",
+  "displayName": "G2727 Dependency Rerouter",
+  "version": "1.0.1",
   "unity": "2022.3",
   "description": "Pick a prefab or avatar, see every asset it depends on as a folder tree, choose what you want, and move or copy (with references rewired) into a folder of your choice.",
   "author": {
