@@ -1,6 +1,7 @@
-# Builds a VPM release whenever package.json's version changes on main,
-# then rebuilds the VCC listing (index.json) on GitHub Pages from every release.
-name: Release & Listing
+# Builds a VPM release whenever package.json's version changes on main.
+# The package is listed in Garret27/g2727-vpm (https://garret27.github.io/g2727-vpm/),
+# which reads these releases (zip + package.json) when its "Build Repo Listing" workflow runs.
+name: Release
 
 on:
   push:
@@ -10,17 +11,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: release
-  cancel-in-progress: false
-
-env:
-  LISTING_ID: io.github.garret27.vpm
-  LISTING_NAME: Garret27's VCC Packages
-  LISTING_AUTHOR: Garret27
 
 jobs:
   release:
@@ -50,55 +40,4 @@ jobs:
           gh release create "$VERSION" "$ZIP" package.json \
             --title "Dependency Rerouter $VERSION" \
             --notes "${NOTES:-Release $VERSION}"
-
-  listing:
-    needs: release
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build index.json from all releases
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: |
-          set -e
-          OWNER_LC=$(echo "${REPO%%/*}" | tr '[:upper:]' '[:lower:]')
-          REPO_NAME="${REPO#*/}"
-          LISTING_URL="https://$OWNER_LC.github.io/$REPO_NAME/index.json"
-          mkdir -p site work
-          echo '{}' > work/versions.json
-          for TAG in $(gh release list --repo "$REPO" --limit 200 --json tagName -q '.[].tagName'); do
-            rm -rf "work/$TAG"; mkdir -p "work/$TAG"
-            gh release download "$TAG" --repo "$REPO" -D "work/$TAG" -p 'package.json' -p '*.zip' || continue
-            ZIP=$(ls "work/$TAG"/*.zip 2>/dev/null | head -1)
-            [ -f "work/$TAG/package.json" ] && [ -n "$ZIP" ] || continue
-            SHA=$(sha256sum "$ZIP" | cut -d' ' -f1)
-            URL="https://github.com/$REPO/releases/download/$TAG/$(basename "$ZIP")"
-            jq --arg url "$URL" --arg sha "$SHA" '. + {url: $url, zipSHA256: $sha}' "work/$TAG/package.json" > "work/$TAG/entry.json"
-            VER=$(jq -r .version "work/$TAG/entry.json")
-            jq --arg v "$VER" --slurpfile e "work/$TAG/entry.json" '. + {($v): $e[0]}' work/versions.json > work/tmp.json
-            mv work/tmp.json work/versions.json
-          done
-          PKG=$(jq -r .name package.json)
-          jq -n \
-            --arg name "$LISTING_NAME" --arg id "$LISTING_ID" --arg url "$LISTING_URL" \
-            --arg author "$LISTING_AUTHOR" --arg pkg "$PKG" \
-            --slurpfile versions work/versions.json \
-            '{name: $name, id: $id, url: $url, author: $author,
-              packages: {($pkg): {versions: $versions[0]}}}' > site/index.json
-          ENC=$(jq -rn --arg u "$LISTING_URL" '$u|@uri')
-          sed -e "s|__LISTING_URL__|$LISTING_URL|g" -e "s|__LISTING_URL_ENC__|$ENC|g" \
-              -e "s|__VERSION__|$(jq -r .version package.json)|g" \
-              .github/pages/index.html > site/index.html
-          cat site/index.json
-
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-      - id: deploy
-        uses: actions/deploy-pages@v4
+          echo "::notice::Released $VERSION. Run 'Build Repo Listing' in Garret27/g2727-vpm to publish it to VCC."

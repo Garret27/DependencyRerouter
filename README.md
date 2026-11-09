@@ -5,9 +5,9 @@ A Unity editor tool for VRChat creators and anyone else. Pick a prefab, an avata
 ## Install
 
 ### VRChat Creator Companion (VCC / ALCOM)
-1. Open **https://garret27.github.io/DependencyRerouter/** and click **Add to VCC**, or in VCC go to **Settings → Packages → Add Repository** and paste:
+1. Open **https://garret27.github.io/g2727-vpm/** and click **Add to VCC**, or in VCC go to **Settings → Packages → Add Repository** and paste:
    ```
-   https://garret27.github.io/DependencyRerouter/index.json
+   https://garret27.github.io/g2727-vpm/index.json
    ```
 2. In your project, open **Manage Project** and add **Dependency Rerouter**.
 
